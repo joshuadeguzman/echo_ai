@@ -31,6 +31,7 @@ class _ChatPageState extends State<ChatPage> {
     _messages = [];
     _isLoading = false;
 
+    // Initialize ChatGPT SDK
     _openAI = OpenAI.instance.build(
       token: dotenv.env['OPENAI_API_KEY'],
       baseOption: HttpSetup(
@@ -38,6 +39,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
 
+    // This tells ChatGPT what his role is
     _handleInitialMessage(
       'You are a ${widget.character.toLowerCase()}. Please send a super short intro message. Your name is Echo.',
     );
@@ -77,6 +79,7 @@ class _ChatPageState extends State<ChatPage> {
     });
     _textController.clear();
 
+    // Add the user sent message to the thread
     ChatMessage prompt = ChatMessage(
       text: text,
       isSentByMe: true,
@@ -87,6 +90,7 @@ class _ChatPageState extends State<ChatPage> {
       _messages.insert(0, prompt);
     });
 
+    // Handle ChatGPT request and response
     final request = ChatCompleteText(
       messages: [
         Map.of({"role": "user", "content": text})
@@ -94,9 +98,9 @@ class _ChatPageState extends State<ChatPage> {
       maxToken: 200,
       model: kChatGptTurbo0301Model,
     );
-
     final response = await _openAI.onChatCompletion(request: request);
 
+    // Add the user received message to the thread
     ChatMessage message = ChatMessage(
       text: response!.choices.first.message.content.trim(),
       isSentByMe: false,
@@ -210,11 +214,13 @@ class _ChatPageState extends State<ChatPage> {
                 hintText: 'Type a message',
                 enabled: !_isLoading,
               ),
+              // Add this to handle submission when user presses done
               onSubmitted: _isLoading ? null : _handleSubmit,
             ),
           ),
           IconButton(
             icon: const Icon(Icons.send),
+            // Add this to handle submission when user presses the send icon
             onPressed: _isLoading
                 ? null
                 : () => _handleSubmit(
