@@ -31,82 +31,15 @@ class _ChatPageState extends State<ChatPage> {
     _messages = [];
     _isLoading = false;
 
-    _openAI = OpenAI.instance.build(
-      token: dotenv.env['OPENAI_API_KEY'],
-      baseOption: HttpSetup(
-        receiveTimeout: const Duration(seconds: 30),
-      ),
-    );
-
-    _handleInitialMessage(
-      'You are a ${widget.character.toLowerCase()}. Please send a super short intro message. Your name is Echo.',
-    );
     super.initState();
   }
 
   Future<void> _handleInitialMessage(String character) async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    final request = ChatCompleteText(
-      messages: [
-        Map.of({"role": "assistant", "content": character})
-      ],
-      maxToken: 200,
-      model: kChatGptTurbo0301Model,
-    );
-
-    final response = await _openAI.onChatCompletion(request: request);
-
-    ChatMessage message = ChatMessage(
-      text: response!.choices.first.message.content.trim().replaceAll('"', ''),
-      isSentByMe: false,
-      timestamp: DateTime.now(),
-    );
-
-    setState(() {
-      _messages.insert(0, message);
-      _isLoading = false;
-    });
+    // Handle initial message here
   }
 
   Future<void> _handleSubmit(String text) async {
-    setState(() {
-      _isLoading = true;
-    });
-    _textController.clear();
-
-    ChatMessage prompt = ChatMessage(
-      text: text,
-      isSentByMe: true,
-      timestamp: DateTime.now(),
-    );
-
-    setState(() {
-      _messages.insert(0, prompt);
-    });
-
-    final request = ChatCompleteText(
-      messages: [
-        Map.of({"role": "user", "content": text})
-      ],
-      maxToken: 200,
-      model: kChatGptTurbo0301Model,
-    );
-
-    final response = await _openAI.onChatCompletion(request: request);
-
-    ChatMessage message = ChatMessage(
-      text: response!.choices.first.message.content.trim(),
-      isSentByMe: false,
-      timestamp: DateTime.now(),
-    );
-
-    setState(() {
-      _messages.insert(0, message);
-      _isLoading = false;
-    });
+    // Handle prompt submission here
   }
 
   Widget _buildChatList() {
@@ -210,16 +143,14 @@ class _ChatPageState extends State<ChatPage> {
                 hintText: 'Type a message',
                 enabled: !_isLoading,
               ),
-              onSubmitted: _isLoading ? null : _handleSubmit,
+              // Add this to handle submission when user presses done
+              onSubmitted: null,
             ),
           ),
           IconButton(
             icon: const Icon(Icons.send),
-            onPressed: _isLoading
-                ? null
-                : () => _handleSubmit(
-                      _textController.text,
-                    ),
+            // Add this to handle submission when user presses the send icon
+            onPressed: null,
           ),
         ],
       ),
