@@ -72,6 +72,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _handleSubmit(String text) async {
+    setState(() {
+      _isLoading = true;
+    });
     _textController.clear();
 
     ChatMessage prompt = ChatMessage(
