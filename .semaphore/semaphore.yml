@@ -5,9 +5,37 @@ agent:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: 'Block #1'
+  - name: Build
     task:
       jobs:
-        - name: 'Job #1'
+        - name: Install dependencies
           commands:
             - checkout
+            - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
+            - flutter pub get
+            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages /root/.pub-cache'
+  - name: Lint
+    task:
+      prologue:
+        commands:
+          - checkout
+          - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
+          - flutter pub get
+      jobs:
+        - name: Format
+          commands:
+            - flutter format --set-exit-if-changed .
+        - name: Analyze
+          commands:
+            - flutter analyze .
+  - name: Test
+    task:
+      prologue:
+        commands:
+          - checkout
+          - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
+          - flutter pub get
+      jobs:
+        - name: Unit
+          commands:
+            - flutter test test
