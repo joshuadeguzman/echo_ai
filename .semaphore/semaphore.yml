@@ -16,6 +16,7 @@ blocks:
             - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
             - flutter pub get
             - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
+    dependencies: []
   - name: Lint
     task:
       prologue:
@@ -33,6 +34,8 @@ blocks:
         - name: Analyze
           commands:
             - flutter analyze .
+    dependencies:
+      - Test
   - name: Test
     task:
       prologue:
@@ -47,3 +50,5 @@ blocks:
         - name: Unit
           commands:
             - flutter test test
+    dependencies:
+      - Build
