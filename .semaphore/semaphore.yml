@@ -12,33 +12,37 @@ blocks:
           commands:
             - flutter upgrade --force
             - checkout
+            - export PUB_CACHE=$PWD/.pub-cache
             - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
             - flutter pub get
-            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages /root/.pub-cache'
+            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
   - name: Lint
     task:
       prologue:
         commands:
           - flutter upgrade --force
           - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
+          - cp assets/.env.example assets/.env
       jobs:
         - name: Format
           commands:
             - flutter format --set-exit-if-changed .
         - name: Analyze
           commands:
-            - 'true'
-            - '#flutter analyze .'
+            - flutter analyze .
   - name: Test
     task:
       prologue:
         commands:
           - flutter upgrade --force
           - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
+          - cp assets/.env.example assets/.env
       jobs:
         - name: Unit
           commands:
