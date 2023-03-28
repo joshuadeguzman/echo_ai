@@ -10,6 +10,7 @@ blocks:
       jobs:
         - name: Install dependencies
           commands:
+            - flutter upgrade --force
             - checkout
             - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
             - flutter pub get
@@ -18,6 +19,7 @@ blocks:
     task:
       prologue:
         commands:
+          - flutter upgrade --force
           - checkout
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
@@ -32,6 +34,7 @@ blocks:
     task:
       prologue:
         commands:
+          - flutter upgrade --force
           - checkout
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
