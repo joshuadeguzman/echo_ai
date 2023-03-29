@@ -10,7 +10,7 @@ blocks:
       jobs:
         - name: Install dependencies
           commands:
-            - '#flutter upgrade --force'
+            - flutter upgrade --force
             - flutter --version
             - checkout
             - export PUB_CACHE=$PWD/.pub-cache
@@ -22,7 +22,7 @@ blocks:
     task:
       prologue:
         commands:
-          - '#flutter upgrade --force'
+          - flutter upgrade --force
           - flutter --version
           - checkout
           - export PUB_CACHE=$PWD/.pub-cache
@@ -42,7 +42,7 @@ blocks:
     task:
       prologue:
         commands:
-          - '#flutter upgrade --force'
+          - flutter upgrade --force
           - flutter --version
           - checkout
           - export PUB_CACHE=$PWD/.pub-cache
