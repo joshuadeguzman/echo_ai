@@ -10,15 +10,15 @@ blocks:
       jobs:
         - name: Install and cache Flutter
           commands:
-            - checkout
+            - export PUB_CACHE=$PWD/.pub-cache
             - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
             - flutter pub get
-            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages /root/.pub-cache'
+            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
   - name: Lint
     task:
       prologue:
         commands:
-          - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
       jobs:
@@ -32,7 +32,7 @@ blocks:
     task:
       prologue:
         commands:
-          - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
       jobs:
