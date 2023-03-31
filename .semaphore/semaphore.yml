@@ -20,6 +20,7 @@ blocks:
           - checkout export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
+          - cp assets/.env.example assets/.env
       jobs:
         - name: Format
           commands:
@@ -34,6 +35,7 @@ blocks:
           - checkout export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - flutter pub get
+          - cp assets/.env.example assets/.env
       jobs:
         - name: Unit Test
           commands:
