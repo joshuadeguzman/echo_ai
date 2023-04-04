@@ -12,15 +12,18 @@ blocks:
           commands:
             - checkout
             - export PUB_CACHE=$PWD/.pub-cache
-            - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages flutter pub get cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
+            - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
+            - 'flutter pub get '
+            - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
   - name: Lint
     task:
       prologue:
         commands:
-          - checkout export PUB_CACHE=$PWD/.pub-cache
+          - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
-          - flutter pub get
-          - cp assets/.env.example assets/.env
+          - 'flutter pub get '
+          - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
       jobs:
         - name: Format
           commands:
@@ -32,10 +35,11 @@ blocks:
     task:
       prologue:
         commands:
-          - checkout export PUB_CACHE=$PWD/.pub-cache
+          - checkout
+          - export PUB_CACHE=$PWD/.pub-cache
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
-          - flutter pub get
-          - cp assets/.env.example assets/.env
+          - 'flutter pub get '
+          - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
       jobs:
         - name: Unit Test
           commands:
