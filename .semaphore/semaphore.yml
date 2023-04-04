@@ -15,6 +15,7 @@ blocks:
             - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
             - 'flutter pub get '
             - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
+            - cp assets/.env.example .env
   - name: Lint
     task:
       prologue:
@@ -24,6 +25,7 @@ blocks:
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - 'flutter pub get '
           - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
+          - cp assets/.env.example .env
       jobs:
         - name: Format
           commands:
@@ -40,6 +42,7 @@ blocks:
           - 'cache restore flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages'
           - 'flutter pub get '
           - 'cache store flutter-packages-$SEMAPHORE_GIT_BRANCH-$(checksum pubspec.yaml),flutter-packages-$(checksum pubspec.yaml),flutter-packages .pub-cache'
+          - cp assets/.env.example .env
       jobs:
         - name: Unit Test
           commands:
