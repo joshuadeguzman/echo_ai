@@ -2,6 +2,7 @@ import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import 'model.dart';
 
@@ -116,10 +117,25 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildChatList() {
     return Flexible(
       child: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16),
         reverse: true,
         itemCount: _messages.length,
-        itemBuilder: (_, int index) {
+        itemBuilder: (context, int index) {
+          if (_isLoading && index == 0) {
+            return Transform.scale(
+              scaleX: -1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/chat_loading.json',
+                    height: 32,
+                  ),
+                ],
+              ),
+            );
+          }
+
           ChatMessage message = _messages[index];
           return _buildChatBubble(message);
         },
@@ -145,7 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                   ? const EdgeInsets.only(left: 100)
                   : const EdgeInsets.only(right: 100),
               decoration: BoxDecoration(
-                color: isSentByMe ? Colors.blue : Colors.grey[300],
+                color: isSentByMe ? Colors.blue : const Color(0x909A7AF7),
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(12.0),
                   topRight: const Radius.circular(12.0),
@@ -168,24 +184,24 @@ class _ChatPageState extends State<ChatPage> {
                   Text(
                     isSentByMe
                         ? 'You'
-                        : '@Echo_${widget.character.toString().replaceAll(' ', '')}',
-                    style: TextStyle(
+                        : '@${widget.character.toString().replaceAll(' ', '')}',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: isSentByMe ? Colors.white : Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     message.text,
-                    style: TextStyle(
-                      color: isSentByMe ? Colors.white : Colors.black,
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     '${dateFormat.format(message.timestamp)} at ${timeFormat.format(message.timestamp)}',
-                    style: TextStyle(
-                      color: isSentByMe ? Colors.white : Colors.black87,
+                    style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 8,
                     ),
                   ),
@@ -272,7 +288,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ],
             ),
-            if (_isLoading)
+            if (_isLoading && _messages.isEmpty)
               Center(
                 child: Container(
                   margin: const EdgeInsets.all(20),

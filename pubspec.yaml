@@ -39,6 +39,7 @@ dependencies:
   chat_gpt_sdk: ^2.0.6
   intl: ^0.18.0
   flutter_dotenv: ^5.0.2
+  lottie: ^2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,7 @@ flutter:
 
   assets:
     - assets/.env
+    - assets/animations/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
