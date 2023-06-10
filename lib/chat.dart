@@ -214,6 +214,8 @@ class _ChatPageState extends State<ChatPage> {
                 hintText: 'Type a message',
                 enabled: !_isLoading,
               ),
+              minLines: 1,
+              maxLines: null,
               // Add this to handle submission when user presses done
               onSubmitted: _isLoading ? null : _handleSubmit,
             ),
